@@ -6,6 +6,7 @@ import {
   ConflictException,
   InternalServerErrorException,
 } from '@nestjs/common';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -41,6 +42,16 @@ export class UserRepository extends Repository<User> {
 
   async getUserOne(userId: string): Promise<User> {
     const user = await this.findOneOrFail(userId);
+    return user;
+  }
+
+  async updateUserOne(
+    userId: string,
+    UpdateUserDto: UpdateUserDto,
+  ): Promise<any> {
+    console.log(userId, UpdateUserDto);
+    const user = await this.update(userId, UpdateUserDto);
+    console.log(user);
     return user;
   }
 }

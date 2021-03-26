@@ -1,8 +1,17 @@
-import { Controller, Post, Body, UseFilters, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseFilters,
+  Get,
+  Param,
+  Put,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { ApiBody, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { HttpExceptionFilter } from '../http-exception.filter';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -34,6 +43,19 @@ export class UsersController {
   @ApiParam({ name: 'userId' })
   async getUserOne(@Param('userId') userId: string): Promise<CreateUserDto> {
     const user = await this.usersService.getUserOne(userId);
+    return user;
+  }
+
+  @Put('/:userId')
+  @UseFilters(new HttpExceptionFilter())
+  @ApiOkResponse({ type: UpdateUserDto })
+  @ApiParam({ name: 'userId' })
+  async updateUserOne(
+    @Body() updateUserDto: UpdateUserDto,
+    @Param('userId') userId: string,
+  ): Promise<UpdateUserDto> {
+    const user = await this.usersService.updateUser(userId, updateUserDto);
+    console.log(user);
     return user;
   }
 }
