@@ -49,9 +49,16 @@ export class UserRepository extends Repository<User> {
     userId: string,
     UpdateUserDto: UpdateUserDto,
   ): Promise<any> {
-    console.log(userId, UpdateUserDto);
     const user = await this.update(userId, UpdateUserDto);
-    console.log(user);
     return user;
+  }
+
+  async deleteUserOne(userId: string): Promise<any> {
+    try {
+      const user = await this.delete(userId);
+      return user;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

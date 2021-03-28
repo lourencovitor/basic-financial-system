@@ -30,4 +30,8 @@ export class UsersService {
   ): Promise<User> {
     return this.userRepository.updateUserOne(userId, updateUserDto);
   }
+
+  async deleteUser(userId: string): Promise<User> {
+    return this.userRepository.deleteUserOne(userId);
+  }
 }

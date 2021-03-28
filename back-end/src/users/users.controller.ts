@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
@@ -48,14 +49,22 @@ export class UsersController {
 
   @Put('/:userId')
   @UseFilters(new HttpExceptionFilter())
-  @ApiOkResponse({ type: UpdateUserDto })
+  @ApiOkResponse({ type: String })
   @ApiParam({ name: 'userId' })
   async updateUserOne(
     @Body() updateUserDto: UpdateUserDto,
     @Param('userId') userId: string,
-  ): Promise<UpdateUserDto> {
-    const user = await this.usersService.updateUser(userId, updateUserDto);
-    console.log(user);
-    return user;
+  ): Promise<string> {
+    await this.usersService.updateUser(userId, updateUserDto);
+    return 'Successfully updated';
+  }
+
+  @Delete('/:userId')
+  @UseFilters(new HttpExceptionFilter())
+  @ApiOkResponse({ type: String })
+  @ApiParam({ name: 'userId' })
+  async deleteUserOne(@Param('userId') userId: string): Promise<string> {
+    await this.usersService.deleteUser(userId);
+    return 'Successfully deleted';
   }
 }
