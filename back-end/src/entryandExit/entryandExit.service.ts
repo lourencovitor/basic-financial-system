@@ -19,7 +19,11 @@ export class EntryandExitService {
     );
   }
 
-  async getUser(): Promise<Entryandexit[]> {
-    return this.entryandExitRepository.getUser();
+  async getEntryandExit(): Promise<Entryandexit[]> {
+    return this.entryandExitRepository.getEntryandExit();
+  }
+
+  async searchEntryandExit(query: any): Promise<Entryandexit[]> {
+    return this.entryandExitRepository.searchEntryandExit(query);
   }
 }

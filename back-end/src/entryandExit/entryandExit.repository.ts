@@ -10,27 +10,38 @@ export class EntryandExitRepository extends Repository<Entryandexit> {
     createEntryandExitDto: CreateEntryandExitDto,
   ): Promise<Entryandexit> {
     try {
-      const { userId, value, entryandExitType } = createEntryandExitDto;
+      const { userId, value, entryandExitType, date } = createEntryandExitDto;
       const user = await User.findOneOrFail(userId);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       const entryandExit = this.create({
         user,
         value,
+        date,
         entryandExitType,
       });
       await entryandExit.save();
       return entryandExit;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw new InternalServerErrorException(
         'Erro ao salvar o entry and Exit no banco de dados',
       );
     }
   }
 
-  async getUser(): Promise<Entryandexit[]> {
+  async getEntryandExit(): Promise<Entryandexit[]> {
     const entryandexit = await this.find();
+    return entryandexit;
+  }
+
+  async searchEntryandExit(query: any): Promise<any> {
+    const entryandexit = await this.createQueryBuilder('entryandExit')
+      .where('entryandExit.date = :date', {
+        date: query.date,
+      })
+      .where('entryandExit.entryandExitType = :entryandExitType', {
+        entryandExitType: query.entryandExitType,
+      })
+      .getMany();
     return entryandexit;
   }
 }

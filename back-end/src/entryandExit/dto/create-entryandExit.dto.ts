@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateEntryandExitDto {
   @ApiProperty({
@@ -15,7 +15,12 @@ export class CreateEntryandExitDto {
   @IsNumber()
   value: number;
 
-  @ApiProperty({ description: 'entryandExitType', example: 'INPUT' })
+  @ApiProperty({ description: 'Date', example: '2021-08-25' })
+  @IsNotEmpty({ message: 'Value is required' })
+  @IsDateString()
+  date: string = new Date().toISOString();
+
+  @ApiProperty({ description: 'entryandExitType', example: 'input' })
   @IsNotEmpty({ message: 'entryandExitType required' })
   @IsString({ message: 'It has to be of type string' })
   entryandExitType = '';

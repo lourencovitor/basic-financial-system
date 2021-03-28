@@ -58,7 +58,7 @@ export class UserRepository extends Repository<User> {
       const user = await this.delete(userId);
       return user;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 }

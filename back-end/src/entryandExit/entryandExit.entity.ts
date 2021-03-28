@@ -24,6 +24,9 @@ export class Entryandexit extends BaseEntity {
   @Column({ nullable: false })
   public entryandExitType: string;
 
+  @Column({ name: 'date', type: 'date' })
+  public date!: Date;
+
   @CreateDateColumn()
   createdAt: Date;
 

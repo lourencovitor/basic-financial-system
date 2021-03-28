@@ -25,5 +25,5 @@ async function bootstrap() {
 try {
   bootstrap();
 } catch (error) {
-  console.log(`Error: ${error.getMessage()}`);
+  console.error(`Error: ${error.getMessage()}`);
 }
