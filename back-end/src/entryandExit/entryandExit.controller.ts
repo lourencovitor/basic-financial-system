@@ -6,6 +6,7 @@ import {
   Post,
   Body,
   Query,
+  Param,
 } from '@nestjs/common';
 import { CreateEntryandExitDto } from './dto/create-entryandExit.dto';
 import { Entryandexit } from './entryandExit.entity';
@@ -31,19 +32,29 @@ export class EntryandExitController {
     return user;
   }
 
-  @Get()
+  @Get('/:userId')
   @UseFilters(new HttpExceptionFilter())
   @ApiOkResponse({ type: [CreateEntryandExitDto] })
-  async getEntryandExit(): Promise<Entryandexit[]> {
-    const entryandexit = await this.entryandExitService.getEntryandExit();
+  async getEntryandExit(
+    @Param('userId') userId: string,
+  ): Promise<Entryandexit[]> {
+    const entryandexit = await this.entryandExitService.getEntryandExit(userId);
     return entryandexit;
   }
 
   @Get('/search')
   @UseFilters(new HttpExceptionFilter())
   @ApiOkResponse({ type: [CreateEntryandExitDto] })
-  @ApiQuery({ type: 'string', name: 'entryandExitType' })
-  @ApiQuery({ type: 'string', name: 'date' })
+  @ApiQuery({
+    enum: ['input', 'output'],
+    name: 'entryandExitType',
+    required: false,
+  })
+  @ApiQuery({
+    type: 'string',
+    name: 'date',
+    required: false,
+  })
   async searchEntryandExit(@Query() query: string): Promise<Entryandexit[]> {
     const entryandexit = await this.entryandExitService.searchEntryandExit(
       query,

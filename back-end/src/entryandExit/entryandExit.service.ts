@@ -19,8 +19,8 @@ export class EntryandExitService {
     );
   }
 
-  async getEntryandExit(): Promise<Entryandexit[]> {
-    return this.entryandExitRepository.getEntryandExit();
+  async getEntryandExit(userId: string): Promise<Entryandexit[]> {
+    return this.entryandExitRepository.getEntryandExit(userId);
   }
 
   async searchEntryandExit(query: any): Promise<Entryandexit[]> {

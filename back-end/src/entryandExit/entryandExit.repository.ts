@@ -34,20 +34,41 @@ export class EntryandExitRepository extends Repository<Entryandexit> {
     }
   }
 
-  async getEntryandExit(): Promise<Entryandexit[]> {
-    const entryandexit = await this.find();
-    return entryandexit;
+  async getEntryandExit(userId: string): Promise<Entryandexit[]> {
+    try {
+      const entryandexit = this.createQueryBuilder('entryandExit')
+        .where('entryandExit.userId = :userId', { userId: userId })
+        .orderBy('entryandExit.date', 'DESC')
+        .getMany();
+      return entryandexit;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async searchEntryandExit(query: any): Promise<any> {
-    const entryandexit = await this.createQueryBuilder('entryandExit')
-      .where('entryandExit.date = :date', {
-        date: query.date,
-      })
-      .where('entryandExit.entryandExitType = :entryandExitType', {
-        entryandExitType: query.entryandExitType,
-      })
-      .getMany();
+    const where = () => {
+      if (query.entryandExitType && query.date) {
+        return {
+          entryandExitType: query.entryandExitType,
+          date: query.date,
+        };
+      } else if (query.entryandExitType) {
+        return {
+          entryandExitType: query.entryandExitType,
+        };
+      } else if (query.date) {
+        return {
+          date: query.date,
+        };
+      } else {
+        return {};
+      }
+    };
+
+    const entryandexit = await this.find({
+      where: where(),
+    });
     return entryandexit;
   }
 }
